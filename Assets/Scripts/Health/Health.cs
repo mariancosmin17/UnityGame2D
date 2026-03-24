@@ -12,6 +12,9 @@ public class Health : MonoBehaviour
     [SerializeField] private float iFramesDuration;
     [SerializeField] private int numberOfFlashes;
     private SpriteRenderer spriteRend;
+
+    [SerializeField] private Behaviour[] components;
+    private bool invulnerable;
     
     private void Awake()
     {
@@ -22,6 +25,7 @@ public class Health : MonoBehaviour
     
     public void TakeDamage(float _damage)
     {
+        if (invulnerable) return;
     currentHealth=Mathf.Clamp(currentHealth-_damage,0,startingHealth);
 
     if(currentHealth>0)
@@ -33,7 +37,12 @@ public class Health : MonoBehaviour
     {
         if(!dead)
         {anim.SetTrigger("die");
-        GetComponent<PlayerMovement>().enabled=false;
+       
+                foreach (Behaviour component in components)
+                {
+                    component.enabled = false;
+                }
+        
         dead=true;
         }
        
@@ -44,7 +53,9 @@ public class Health : MonoBehaviour
     {    currentHealth=Mathf.Clamp(currentHealth+_value,0,startingHealth);
     }
     private IEnumerator Invunerabilty()
-    {Physics2D.IgnoreLayerCollision(8,9,true);
+    {
+        invulnerable = true;
+        Physics2D.IgnoreLayerCollision(8,9,true);
      for(int i=0;i<numberOfFlashes;i++)
        {
         spriteRend.color=new Color(1,0,0,0.5f);
@@ -53,6 +64,11 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(iFramesDuration/(numberOfFlashes*2));
        }     
      Physics2D.IgnoreLayerCollision(8,9,false);
+        invulnerable = false;
     }
 
+    private void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
 }
