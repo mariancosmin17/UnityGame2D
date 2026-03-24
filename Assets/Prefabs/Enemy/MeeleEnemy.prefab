@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5762400fb79ab7149aa9da9ee2df3eb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeeleEnemy
-  attackCooldown: 1
+  attackCooldown: 2
   range: 2.5
   colliderDistance: 0.45
   damage: 2
