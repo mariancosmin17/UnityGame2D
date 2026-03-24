@@ -13,6 +13,9 @@ public class MeeleEnemy : MonoBehaviour
     private Health playerHealth;
     private EnemyPatrol enemyPatrol;
 
+    [SerializeField] private AudioClip attackSound;
+
+
     private void Awake()
     {
         anim=GetComponent<Animator>();
@@ -26,10 +29,12 @@ public class MeeleEnemy : MonoBehaviour
         //ataca cand vede player-ul
         if (PlayerInSight())
         {
-            if (cooldownTimer >= attackCooldown)
+            if (cooldownTimer >= attackCooldown && playerHealth.currentHealth>0)
             {
                 cooldownTimer = 0;
                 anim.SetTrigger("meeleAttack");
+                SoundManager.instance.PlaySound(attackSound);
+
             }
         }
 
