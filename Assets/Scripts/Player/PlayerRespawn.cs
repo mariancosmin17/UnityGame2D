@@ -5,13 +5,21 @@ public class PlayerRespawn : MonoBehaviour
     [SerializeField] private AudioClip checkpointSound;
     private Transform currentCheckpoint;
     private Health playerHealth;
+    private UiManager uiManager;
 
     private void Awake()
     {
         playerHealth = GetComponent<Health>();
+        uiManager = FindObjectOfType<UiManager>();
     }
     public void Respawn1()
     {
+        if(currentCheckpoint==null)
+        {
+            uiManager.GameOver();
+
+            return;
+        }
         transform.position=currentCheckpoint.position;
         playerHealth.Respawn();
         //muta camera la checkpoint room(checkpoint object trebuie pus ca copil al obiectului camera)
